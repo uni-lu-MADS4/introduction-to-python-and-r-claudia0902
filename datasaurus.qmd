@@ -1,0 +1,66 @@
+---
+title: "datasaurus"
+format: html
+editor: visual
+---
+
+```{r}
+library(datasauRus)
+library(tidyverse)
+data("datasaurus_dozen")
+View(datasaurus_dozen)
+```
+
+# get the dimensions
+
+```{r}
+dim(datasaurus_dozen)
+ncol(datasaurus_dozen)
+nrow(datasaurus_dozen)
+ds_dozen <- datasaurus_dozen
+```
+
+# Compute the mean of the x & y column
+
+```{r}
+group_dataset_x <- ds_dozen %>%
+  group_by(dataset) %>%
+  summarise(mean_y = mean(y))
+
+group_dataset_x
+```
+
+```{r}
+group_dataset_y <- ds_dozen %>%
+  group_by(dataset) %>%
+  summarise(mean_x = mean(x))
+group_dataset_y
+```
+
+# Compute the Pearson correlation between x and y per dataset?
+
+```{r}
+group_dataset_cor <- ds_dozen %>%
+  group_by(dataset) %>%
+  summarise(cor_dataset = cor(x,y), method = c("pearson"))
+group_dataset_cor
+```
+
+#Perform a linear model of y explained by x per dataset
+
+```{r}
+ds_dozen_nested <- ds_dozen %>% 
+  group_by(dataset) %>% 
+  nest()
+
+ds_dozen_nested <- ds_dozen_nested %>% 
+  mutate(model = map(data, function(df) lm(y ~ x, data = df)))
+ds_dozen_nested
+```
+
+# Plot the datasauRus
+
+```{r}
+plot_data <- ggplot(ds_dozen, aes (x, y, colour = dataset)) + geom_point() + facet_wrap(~dataset) + theme_void()
+plot_data
+```
