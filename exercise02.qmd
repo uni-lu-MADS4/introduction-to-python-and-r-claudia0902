@@ -1,7 +1,7 @@
 ---
 title: "Getting started with R and Python"
 date: 2025-09-22
-author: "Your name"
+author: "Claudia Gutierrez"
 format: html
 embed-resources: true
 ---
@@ -17,22 +17,23 @@ embed-resources: true
  - Calculate `2 + 6 * 5 ^ 2`
  
 ```{r}
-# Write answer here
+result_start = 2 + 6 * 5 ^ 2 
+result_start
 ```
 
 
  - Which operator has the higher priority?
 
-::: unilur-solution
-Exponentiation
-
-::: 
+```{r}
+#Exponentiation
+``` 
 
  - Change the order of execution giving priority to `+`
 
 
 ```{r}
-# Write answer here
+result = (2+6) * 5 ^ 2
+print(result)
 ```
  
 
@@ -46,33 +47,38 @@ b = 10
 ```
 
 ```{python}
-# Write answer here
+c = a
+a = b 
+b = c
+
+a = a + b
+b = a - b
+a = a - b
+
+a, b = b, a
+print(a, b)
 ```
 
 ### What is the output of the following code?
 
 ```{python}
-# Write answer here
+x = 7
+1 < x < 10 < x + 3 <= 13
 ```
 
 Explain in your words!
 
-::: unilur-solution
-Python parses four expressions, 1 < x and x < 10 and 10 < x + 3 and x + 3 <= 13 [ ] True or [ ] False 
-:::
-
+### Python parses four expressions, 1 < x and x < 10 and 10 < x + 3 and x + 3 <= 13 [ ] True or [ ] False 
 
 ### Missing values
 
 A group of people in the street were asked about their age and answered `18, 20, 34, 53, 12, NA, NA, 72, 75, 13`.
 
 
-::: {.callout-tip}
 ### Tip
 You can use the function `replace()` to substitute `NA` with `0`.
 
 Consider `is.na()` to identify indeces of missing positions.
-:::
 
  * Compute the average age. 
  
@@ -81,9 +87,14 @@ Consider `is.na()` to identify indeces of missing positions.
  * How large is error that you make when ignore missing values?
 
 ```{r}
-# Write answer here
+age <- c(18, 20, 34, 53, 12, NA, NA, 72, 75, 13)
+mean(age)
 ```
 
+```{r}
+age[is.na(age)] <- 0
+mean(age)
+```
 ### Create a data frame
 
 Create a data frame containing the following information:
@@ -93,20 +104,31 @@ Paul  | 16  | 57.0 |green  |   1
  Sara  |16   |52.6 |black   |  2
  John  |17   |65.3 | blue    | 2
 
+
 ```{r}
-# Write answer here
+df <- data.frame(name =c("Paul", "Mary", "Sara", "John"), age =c(16.0 , 16.0,
+16.0,17.0), weight = c(57.0, 50.0, 52.6, 65.3), eye= c("green", "blue", "black", "blue"), group= c(1,1,2,2)
+  )
 ```
 
 Assign the data frame to a variable named `classroom`.
-
+```{r}
+classroom <- df
+```
 Describe the type of variables in `classroom`.
-
+```{r}
+summary(classroom)
+```
 Which data structure would you use in base Python?
 
+
 ```{python}
-# Write answer here
+df_python = {"name": ["Paul", "Mary", "Sara", "John"], "age": [16, 16, 16, 17],
+  "weight": [57.0, 50.0, 52.6, 65.3], "eye": ["green", "blue", "black", "blue"], "group": [1, 1, 2, 2]
+}
 ```
 
+# A dictionary with lists
 
 
 ## `mtcars`
@@ -193,7 +215,7 @@ Using `mtcars` (R) and the provided dictionary (Python):
 - In R, calculate the average `mpg` for cars with `cyl == 6` using **vectorized** operations.
    
 ```{r}
-# Write answer here
+mean(mtcars[mtcars$cyl== '6', "mpg"])
 ```
 
 - In base Python, calculate the same quantity.
@@ -208,13 +230,13 @@ Using `mtcars` (R) and the provided dictionary (Python):
 - In R, count the number of cars where `mpg > 20` and `hp <= 100` using vectorized logical operations.
 
 ```{r}
-# Write answer here
+sum(mtcars$mpg > 20 & mtcars$hp <= 100)
 ```
 
 - In Python, perform the same operation.
 
 ```{python}
-# Write answer here
+# sum(mtcars['mpg' > 20 AND'hp' <= 100])
 ```
 
 
@@ -225,7 +247,9 @@ Using `mtcars` (R) and the provided dictionary (Python):
 - In R, check the type of `mtcars$mpg` and coerce it to integer.
 
 ```{r}
-# Write answer here
+class(mtcars$mpg)
+mtcars$mpg <- as.integer(mtcars$mpg)
+class(mtcars$mpg)
 ```
 
 - In Python, check the type of `mtcars['mpg']` and coerce it to a list of integers.
@@ -240,7 +264,8 @@ Using `mtcars` (R) and the provided dictionary (Python):
 - In R, subset `mtcars` to select rows where `gear == 4` and columns `mpg`, and `hp`.
 
 ```{r}
-# Write answer here
+cars_new <- mtcars[mtcars$gear == 4, c("mpg", "hp")]
+head(cars_new)
 ```
 
 - In Python, perform the same operation using explicit iteration.
@@ -257,7 +282,11 @@ Using `mtcars` (R) and the provided dictionary (Python):
 - In R, load the `tidyverse` package and use `dplyr::filter()` to select cars with `am == 1` (manual transmission).
 
 ```{r}
-# Write answer here
+library(tidyverse)
+cars <- mtcars %>%
+  filter(am == '1')
+
+head(cars)
 ```
 
 - In Python, import the `statistics` module and calculate the mean `mpg` for cars with `am == 1`.
